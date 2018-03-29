@@ -43,7 +43,7 @@ class PerViewCommand(sublime_plugin.WindowCommand):
         return self.qcons
 
 class ShowConnectionListCommand(PerViewCommand):
-    ACTIONS = ['Use', 'Use HDB', 'Update', 'Delete', 'Rename']
+    ACTIONS = ['Use', 'Update', 'Delete', 'Rename']
 
     def run(self):
         self.prompt_connection_list()
@@ -118,13 +118,6 @@ class UseConnectionCommand(CommandWithQCon):
     def do(self):
         self.settings.move_to_top(self.qcon) #this will put use connection on the top of connection list
         self.qcon.useHdb(False)
-        self.setConnection(self.qcon)
-        self.done()
-
-class UseHdbConnectionCommand(CommandWithQCon):
-    def do(self):
-        self.settings.move_to_top(self.qcon) #this will put use connection on the top of connection list
-        self.qcon.useHdb(True)
         self.setConnection(self.qcon)
         self.done()
 
