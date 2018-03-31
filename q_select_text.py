@@ -2,10 +2,10 @@ from . import q_chain
 
 class QSelectTextCommand(q_chain.QChainCommand):       
     def do(self, edit, input=None):
-        # get s
-        s = self.selectText()
-
-        # only proceed if s is not empty
+        if input == "selection":
+            s = self.selectText()
+        else:
+            s = self.selectLine()
         if(s == "" or s == "\n"):
             return
         else:
@@ -14,14 +14,12 @@ class QSelectTextCommand(q_chain.QChainCommand):
     def selectText(self):
         s = ""
         for region in self.view.sel():
-            if region.empty():
-                s += self.view.substr(self.view.line(region))
-                #if advanceCursor:
-                #    self.advanceCursor(region)
-            else:
-                s += self.view.substr(region)
+            s += self.view.substr(region)
         return s
 
+    def selectLine(self):
+        return self.view.substr(self.view.line(self.view.sel()[0]))
+        
     #not used
     def advanceCursor(self, region):
         (row, col) = self.view.rowcol(region.begin())
