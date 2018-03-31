@@ -6,7 +6,7 @@ class QOutPanelCommand(q_chain.QChainCommand):
 	def do(self, edit, input=None):
 		input = input.replace('\r', '')
 		panel = self.view.window().get_output_panel("q")
-		syntax_file = "Packages/q KDB/syntax/q_output.tmLanguage"
+		syntax_file = "q_output.tmLanguage"
 		try:
 			panel.set_syntax_file(syntax_file)
 		except Exception:
