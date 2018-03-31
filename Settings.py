@@ -5,7 +5,7 @@ class Settings():
 	package = {}
 
 	def save(self):
-		sublime.save_settings('sublime-q.sublime-settings')
+		sublime.save_settings('kdb.sublime-settings')
 
 	def add_connection(self, qcon):
 		con_dicts = self.get('connections')
@@ -42,7 +42,7 @@ class Settings():
 
 	def get(self, key):
 		if not self.package:
-			self.package = sublime.load_settings('sublime-q.sublime-settings')
+			self.package = sublime.load_settings('kdb.sublime-settings')
 
 		return self.package.get(key)
 
