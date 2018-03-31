@@ -3,9 +3,8 @@ from .qpython import qconnection
 from socket import error as socket_error
 
 class QCon():
-    def __init__(self, host, port, username, password, name=None, hdb=False):
-        self.init = False
-        self.hdb = hdb
+    def __init__(self, host, port, username, password, name=None):
+        # self.init = False
         self.mem = 0
         
         self.name = name
@@ -13,7 +12,7 @@ class QCon():
         self.port = port
         self.username = username
         self.password = password
-        self.q = qconnection.QConnection(host = self.host, port = self.getPort(), username = self.username, password = self.password)
+        self.q = qconnection.QConnection(host = self.host, port = self.port, username = self.username, password = self.password)
 
     @classmethod
     def fromH(cls, h):
@@ -41,7 +40,7 @@ class QCon():
     @classmethod
     def fromDict(cls, d):
         if d is None: return None
-        return cls(d["host"], d["port"], d["username"], d["password"], d["name"], d["hdb"] if "hdb" in d else None)
+        return cls(d["host"], d["port"], d["username"], d["password"], d["name"])
 
     def clone(self):
         return QCon.fromDict(self.toDict())
@@ -53,7 +52,6 @@ class QCon():
             "port": self.port,
             "username": self.username,
             "password": self.password,
-            "hdb": self.hdb
         }
 
     def equals(self, other):
@@ -90,28 +88,16 @@ class QCon():
         if self.password: s+= ':' + self.password
         return s
 
-    def getPort(self):
-        return self.port + (1 if self.hdb else 0)
-
-    def isHdb(self):
-        return self.hdb
-
-    def useHdb(self, hdb):
-        self.hdb = hdb
-        print('use hdb: ' + str(self.hdb))
-        self.init = False
-
     def status(self):
         status = 'OK' if self.ok() else 'FAIL'
         name = (self.name) if self.name else ''
-        hdb = (' (HDB)') if self.hdb else ''
         if self.mem:
             mem = ' [' + self.mem_str(self.mem) + ']'
         else:
             mem = ''
 
 
-        return status + ': ' + name + hdb + '> ' + self.hstatus() + mem
+        return status + ': ' + name + '> ' + self.hstatus() + mem
 
     def mem_str(self, mem):
         mem = int(mem)
@@ -127,8 +113,8 @@ class QCon():
     def ok(self):
         try:
             self.q.open()
-            if not self.init:
-                self.initCon()
+            # if not self.init:
+            #     self.initCon()
             self.mem = self.q('@[{.Q.w[][`used]}; (); 0]')
         except socket_error as serr:
             return False
@@ -136,9 +122,9 @@ class QCon():
             self.q.close()
         return True
 
-    def initCon(self):
-        #only call at first time
-        print('init ' + self.h())
-        #self.q('system "c 2000 2000"')  #expand output to max 2000 chars
-        self.init = True
+    # def initCon(self):
+    #     #only call at first time
+    #     print('init ' + self.h())
+    #     #self.q('system "c 2000 2000"')  #expand output to max 2000 chars
+    #     self.init = True
 

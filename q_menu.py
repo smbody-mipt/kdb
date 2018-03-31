@@ -117,7 +117,6 @@ class CommandWithQCon(PerViewCommand):
 class UseConnectionCommand(CommandWithQCon):
     def do(self):
         self.settings.move_to_top(self.qcon) #this will put use connection on the top of connection list
-        self.qcon.useHdb(False)
         self.setConnection(self.qcon)
         self.done()
 
