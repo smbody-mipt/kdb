@@ -12,7 +12,7 @@
                 {"caption": "Send",
                  "children":
                     [
-                        { "caption": "Send (popup)1",         "command": "q_chain", "args": {"chain": ["q_select_text", "q_send",       "q_out_popup"]}},
+                        { "caption": "Send (popup)",         "command": "q_chain", "args": {"chain": ["q_select_text", "q_send",       "q_out_popup"]}},
                         { "caption": "Send",                 "command": "q_chain", "args": {"chain": ["q_select_text", "q_send",       "q_out_panel"]}},
                         { "caption": "-" },
                         { "caption": "Send (JSON-popup)",    "command": "q_chain", "args": {"chain": ["q_select_text", "q_send_json",  "q_out_popup_json"]}},
