@@ -3,7 +3,7 @@
         "id": "tools",
         "children":
         [{
-            "caption": "Sublime-q",
+            "caption": "kdb",
             "mnemonic": "q",
             "id": "SublimeQ",
             "children":
@@ -12,24 +12,20 @@
                 {"caption": "Send",
                  "children":
                     [
-                        { "caption": "Send (popup)",         "command": "q_chain", "args": {"chain": ["q_select_text", "q_send",       "q_out_popup"]}},
                         { "caption": "Send",                 "command": "q_chain", "args": {"chain": ["q_select_text", "q_send",       "q_out_panel"]}},
                         { "caption": "-" },
-                        { "caption": "Send (JSON-popup)",    "command": "q_chain", "args": {"chain": ["q_select_text", "q_send_json",  "q_out_popup_json"]}},
                         { "caption": "Send (JSON output)",   "command": "q_chain", "args": {"chain": ["q_select_text", "q_send_json",  "q_out_panel"]}},
                 ]},
                 {"caption": "Shortcut",
                  "children":
                     [
-                        { "caption": "Help", "command": "goto_documentation"},
-                        { "caption": "Print",      "command": "q_chain", "args": {"chain": ["q_select_word", "q_send", "q_out_panel"]}},
-                        { "caption": "Print (popup)", "command": "q_chain", "args": {"chain": ["q_select_word", "q_send", "q_out_popup"]}},
-                        { "caption": "Type",       "command": "q_chain", "args": {"chain": ["q_select_word", "q_send_type", "q_out_panel"]}},
-                        { "caption": "Type (popup)", "command": "q_chain", "args": {"chain": ["q_select_word", "q_send_type", "q_out_popup"]}},
-                        { "caption": "Table",       "command": "q_chain", "args": {"chain": ["q_send_table", "q_out_panel"]}},
-                        { "caption": "Table (popup)", "command": "q_chain", "args": {"chain": ["q_send_table", "q_out_popup"]}},
-                        { "caption": "Env",       "command": "q_chain", "args": {"chain": ["q_send_env", "q_out_panel"]}},
-                        { "caption": "Memory", "command": "q_chain", "args": {"chain": ["q_send_mem", "q_out_panel"]}}
+                        { "caption": "Help",  "command": "goto_documentation"},
+                        { "caption": "Print", "command": "q_chain", "args": {"chain": ["q_select_word", "q_send", "q_out_panel"]}},
+                        { "caption": "Type",  "command": "q_chain", "args": {"chain": ["q_select_word", "q_send_type", "q_out_panel"]}},
+                        { "caption": "Table", "command": "q_chain", "args": {"chain": ["q_send_table", "q_out_panel"]}},
+                        { "caption": "Memory","command": "q_chain", "args": {"chain": ["q_send_mem", "q_out_panel"]}},
+                        { "caption": "Env",   "command": "q_chain", "args": {"chain": ["q_send_env", "q_out_panel"]}}
+                        
                     ]
                 }
             ]
@@ -48,20 +44,20 @@
                 "children":
                 [
                     {
-                        "caption": "sublime-q",
+                        "caption": "kdb",
                         "children":
                         [
                             {
                                 "command": "open_file", "args":
                                 {
-                                    "file": "${packages}/sublime-q/settings/sublime-q.sublime-settings"
+                                    "file": "${packages}/kdb/settings/kdb.sublime-settings"
                                 },
                                 "caption": "Settings – Default"
                             },
                             {
                                 "command": "open_file", "args":
                                 {
-                                    "file": "${packages}/User/sublime-q.sublime-settings"
+                                    "file": "${packages}/User/kdb.sublime-settings"
                                 },
                                 "caption": "Settings – User"
                             },
@@ -69,7 +65,7 @@
                             {
                                 "command": "open_file",
                                 "args": {
-                                    "file": "${packages}/sublime-q/sublime/Default (OSX).sublime-keymap",
+                                    "file": "${packages}/kdb/sublime/Default (OSX).sublime-keymap",
                                     "platform": "OSX"
                                 },
                                 "caption": "Key Bindings – Default"
@@ -77,7 +73,7 @@
                             {
                                 "command": "open_file",
                                 "args": {
-                                    "file": "${packages}/sublime-q/sublime/Default (Linux).sublime-keymap",
+                                    "file": "${packages}/kdb/sublime/Default (Linux).sublime-keymap",
                                     "platform": "Linux"
                                 },
                                 "caption": "Key Bindings – Default"
@@ -85,7 +81,7 @@
                             {
                                 "command": "open_file",
                                 "args": {
-                                    "file": "${packages}/sublime-q/sublime/Default (Windows).sublime-keymap",
+                                    "file": "${packages}/kdb/sublime/Default (Windows).sublime-keymap",
                                     "platform": "Windows"
                                 },
                                 "caption": "Key Bindings – Default"
