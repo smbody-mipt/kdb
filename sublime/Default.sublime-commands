@@ -1,8 +1,8 @@
 [
-    { "caption": "Q: Send (popup)",         "command": "chain", "args": {"chain": ["q_select_text", "q_send",       "q_out_popup"]}},
-    { "caption": "Q: Send",                 "command": "chain", "args": {"chain": ["q_select_text", "q_send",       "q_out_panel"]}},
-    { "caption": "Q: Send (JSON-popup)",    "command": "chain", "args": {"chain": ["q_select_text", "q_send_json",  "q_out_popup_json"]}},
-    { "caption": "Q: Send (JSON output)",          "command": "chain", "args": {"chain": ["q_select_text", "q_send_json",  "q_out_panel"]}},
+    { "caption": "Q: Send (popup)",         "command": "q_chain", "args": {"chain": ["q_select_text", "q_send",       "q_out_popup"]}},
+    { "caption": "Q: Send",                 "command": "q_chain", "args": {"chain": ["q_select_text", "q_send",       "q_out_panel"]}},
+    { "caption": "Q: Send (JSON-popup)",    "command": "q_chain", "args": {"chain": ["q_select_text", "q_send_json",  "q_out_popup_json"]}},
+    { "caption": "Q: Send (JSON output)",          "command": "q_chain", "args": {"chain": ["q_select_text", "q_send_json",  "q_out_panel"]}},
 
     {"caption": "Q: Connect", "command": "show_connection_list"}
 ]
