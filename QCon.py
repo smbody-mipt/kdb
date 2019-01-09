@@ -16,9 +16,9 @@ class QCon():
         # print("user="+str(username))
         # print("pass="+str(password))
         if (not username and not password): #sso
-            self.username = qcp.q_creds_provider.getUser();
-            self.password = qcp.q_creds_provider.getPassword();
-        self.q = qconnection.QConnection(host = self.host, port = self.port, username = self.username, password = self.password)
+            username = qcp.q_creds_provider.getUser();
+            password = qcp.q_creds_provider.getPassword();
+        self.q = qconnection.QConnection(host = self.host, port = self.port, username = username, password = password)
 
     @classmethod
     def fromH(cls, h):
@@ -100,7 +100,6 @@ class QCon():
             mem = ' [' + self.mem_str(self.mem) + ']'
         else:
             mem = ''
-
 
         return status + ': ' + name + '> ' + self.hstatus() + mem
 

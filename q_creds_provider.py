@@ -13,12 +13,12 @@ class q_creds_provider():
         #     print("diff="+str(time.time()-cls.last_upd))
         if (not force and cls.last_upd and time.time() - cls.last_upd < cls.settings.get_creds_valid_time()):
             return
-        cls.last_upd = time.time()
         creds_cmd = cls.settings.get_creds_command()
         if (not creds_cmd):
             cls.username = ''
             cls.password = ''
             return
+        cls.last_upd = time.time()
         s = sublime.load_settings('q_creds_temp.sublime-settings')
         s.set('username', None)
         s.set('password', None)
