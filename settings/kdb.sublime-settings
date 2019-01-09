@@ -2,4 +2,6 @@
 	"connections": [],
 	"default_new_connection": "localhost:5555",
 	"use_completion": "True",
+	"creds_command": "",
+	"creds_valid_time": 3600
 }

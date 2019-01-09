@@ -1,5 +1,4 @@
 import sublime, sublime_plugin
-from . import QCon as Q
 
 class Settings():
 	package = {}
@@ -55,3 +54,9 @@ class Settings():
 
 	def get_connections(self):
 		return self.get('connections') or []
+
+	def get_creds_command(self):
+		return self.get('creds_command')
+
+	def get_creds_valid_time(self):
+		return self.get('creds_valid_time')

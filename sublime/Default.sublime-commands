@@ -4,5 +4,7 @@
     { "caption": "Q: Send Selection",                 "command": "q_chain", "args": {"input" : "selection", "chain": ["q_select_text", "q_send",       "q_out_panel"]}},
     { "caption": "Q: Send Selection (JSON output)",   "command": "q_chain", "args": {"input" : "selection", "chain": ["q_select_text", "q_send_json",  "q_out_panel"]}},
 
-    {"caption": "Q: Connect", "command": "show_connection_list"}
+    {"caption": "Q: Connect", "command": "show_connection_list"},
+
+    {"caption": "Q: Force credential refresh", "command": "q_update_creds"}
 ]

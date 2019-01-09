@@ -4,8 +4,8 @@
         "children":
         [{
             "caption": "kdb",
-            "mnemonic": "q",
-            "id": "SublimeQ",
+            "mnemonic": "k",
+            "id": "kdb",
             "children":
             [
                 {"caption": "Connect", "command": "show_connection_list"},

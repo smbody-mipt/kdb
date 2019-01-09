@@ -1,5 +1,6 @@
 import sublime, sublime_plugin
 from .qpython import qconnection
+from . import q_creds_provider as qcp
 from socket import error as socket_error
 
 class QCon():
@@ -12,6 +13,11 @@ class QCon():
         self.port = port
         self.username = username
         self.password = password
+        # print("user="+str(username))
+        # print("pass="+str(password))
+        if (not username and not password): #sso
+            self.username = qcp.q_creds_provider.getUser();
+            self.password = qcp.q_creds_provider.getPassword();
         self.q = qconnection.QConnection(host = self.host, port = self.port, username = self.username, password = self.password)
 
     @classmethod
@@ -85,7 +91,6 @@ class QCon():
     def hstatus(self):
         s = self.host + ':' + str(self.port)
         if self.username: s+= ':' + self.username
-        if self.password: s+= ':' + self.password
         return s
 
     def status(self):
