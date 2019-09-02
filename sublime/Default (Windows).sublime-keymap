@@ -5,7 +5,12 @@
     { "keys": ["ctrl+enter"],       "command": "q_chain", "args": {"input" : "line", "chain": ["q_select_text", "q_send",       "q_out_panel", "q_update_completions"]}, "context":[{ "key": "selector", "operator": "equal", "operand": "source.q" }]},
     { "keys": ["ctrl+shift+enter"], "command": "q_chain", "args": {"input" : "line", "chain": ["q_select_text", "q_send_json",  "q_out_panel", "q_update_completions"]}, "context":[{ "key": "selector", "operator": "equal", "operand": "source.q" }]},
 
-    { "keys": ["escape"],           "command": "q_chain", "args": {"chain": ["q_hide_out_panel", "q_out_popup_close", "hide_auto_complete"]}, "context":[{ "key": "selector", "operator": "equal", "operand": "source.q" }] },
+    { "keys": ["escape"], "command": "q_chain", "args": {"chain": ["q_hide_out_panel", "q_out_popup_close", "hide_auto_complete"]}, "context":
+        [
+            { "key": "selector", "operator": "equal", "operand": "source.q" },
+            { "key": "num_selections", "operator": "equal", "operand": 1 }
+        ] 
+    },
     
     //connection
     { "keys": ["ctrl+alt+q"],   "command": "show_connection_list",  "context":[{ "key": "selector", "operator": "equal", "operand": "source.q" }]},
