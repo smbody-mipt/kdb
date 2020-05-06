@@ -2,7 +2,7 @@
 <plist version="1.0">
 	<dict>
 		<key>scope</key>
-		<string>source.q other.source.q variable.parameter.complex.source.q</string>
+		<string>variable.parameter.global.source.q, variable.parameter.fnglobal.source.q</string>
 		<key>settings</key>
 		<dict>
 			<key>showInIndexedSymbolList</key>

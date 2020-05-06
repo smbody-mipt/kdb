@@ -1,0 +1,104 @@
+%YAML 1.2
+---
+name: q
+file_extensions: [q, k]
+scope: source.q
+
+variables:
+  c: '[a-zA-Z0-9_.]'
+  fc: '[a-zA-Z.]'
+  ncl: '(?<=^|[^a-zA-Z0-9._]|((?<=[^a-zA-Z])_))'
+  ncr: '(?=[^a-zA-Z0-9._]|((?<=[^a-zA-Z])_)|$)'
+  w: '{{ncl}}{{fc}}{{c}}*{{ncr}}'
+  date: '\d{4}\.\d\d\.\d\d'
+  ts: '(?:(\d+(\:\d\d){0,2})?(\.\d{0,9})?)'
+
+contexts:
+  prototype:
+    - include: comments
+    - include: string
+    - include: global_def
+    - include: highlights
+
+  main:
+    - include: root_local_def
+
+    - match: '{'
+      push: [function, func_params]
+      # push: function
+
+  global_def:
+    - match: '((?=\.){{w}}\s*)(:)'
+      captures:
+        1: variable.parameter.global.source.q
+        4: support.function.q
+
+  global_def_fn:
+    - match: '((?!\.){{w}}\s*)(::)'
+      captures:
+        1: variable.parameter.fnglobal.source.q
+        4: support.function.q
+
+  root_local_def:
+    - match: '((?!\.){{w}}\s*)(:)'
+      captures:
+        1: variable.parameter.global.source.q
+        4: support.function.q
+
+  highlights:
+    - match: '{{ncl}}\.{{ncr}}'
+      scope: support.function.q
+    - match: '{{ncl}}(if|prd|while|wavg|delete|min|like|exp|abs|insert|wsum|last|log|div|cos|sin|sqrt|max|in|exec|within|xexp|avg|second|hour|minute|update|sum|by|from|select|neg|not|null|string|reciprocal|floor|ceiling|signum|mod|xbar|xlog|and|or|each|scan|over|prior|mmu|lsq|inv|md5|ltime|gtime|count|first|var|dev|med|cov|cor|all|any|rand|sums|prds|mins|maxs|fills|deltas|ratios|avgs|differ|prev|next|rank|reverse|iasc|idesc|asc|desc|msum|mcount|mavg|mdev|xrank|mmin|mmax|xprev|rotate|distinct|group|where|flip|type|key|til|get|value|attr|cut|set|upsert|raze|union|inter|except|cross|sv|vs|sublist|enlist|read0|read1|hopen|hclose|hdel|hsym|hcount|peach|system|ltrim|rtrim|trim|lower|upper|ssr|view|tables|views|cols|xcols|keys|xkey|xcol|xasc|xdesc|fkeys|meta|lj|aj|aj0|ij|pj|asof|uj|ww|wj|wj1|fby|xgroup|ungroup|ej|save|load|rsave|rload|show|csv|parse|eval|0N!){{ncr}}'
+      scope: keyword.control.source.q
+    - match: '`[:/a-zA-Z0-9_.]*'
+      scope: string.interpolated.symbol.source.q
+    - match: '{{ncl}}{{date}}(d|[DT]{{ts}}?)?{{ncr}}' #d,z,p
+      scope: constant.numeric.temporal.source.q
+    - match: '{{ncl}}(\d{1,}D)?{{ts}}{{ncr}}' #n,t,u,v
+      scope: constant.numeric.temporal.source.q
+    - match: '{{ncl}}(0[Nn][ghijefpmdznuvt]?|-?0[wW][hijefpdznuvt]?){{ncr}}' #null/inf
+      scope: constant.numeric.decimal.source.q
+    - match: '{{ncl}}([01]+b|0x[a-f0-9]+|-?\d{1,}([hij]|(.\d*)?[ef])?|\d{4}\.\d\dm?){{ncr}}' #b,x,i,j,e,f,m
+      scope: constant.numeric.decimal.source.q
+    - match: '(?:[-+!$@\\/#?|'',\(\\)]|(?<=[^a-zA-Z])_|/:|\:|'':|:'')'
+      scope: support.function.q
+    - match: '{{ncl}}(\.[zQ]\.\w+){{ncr}}'
+      captures: 
+        2: support.function.system.source.q
+
+  string:
+    - match: '"'
+      push:
+      - meta_include_prototype: false
+      - meta_scope: string.quoted.double.q
+      - match: \\.
+        scope: constant.character.escape.q
+      - match: '"'
+        pop: true
+
+  comments:
+    - match: '^/$'
+      push:
+        - meta_scope: comment.block.source.q
+        - match: '^\\$'
+          pop: true
+    - match: ( /|^/).*
+      scope: comment.line.source.q
+
+  function:
+    - include: global_def_fn
+    - match: '}'
+      pop: true
+
+  func_params:
+    - meta_include_prototype: false
+    - include: comments
+    - match: '(?=[^\s\[])'
+      pop: true
+    - match: '\['
+      push:
+        - meta_include_prototype: false
+        - match: '{{w}}'
+          scope: entity.other.inherited-class.q
+        - match: '\]'
+          pop: true
