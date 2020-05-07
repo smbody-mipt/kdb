@@ -16,6 +16,8 @@ a_.z.pz
 a-b
 .z.pg:{value 0N!x}
 fff:f1:f2:{x+y};
+gl1:5
+gl2::10
 f3:{[x;y]
   x+y;
   local_a:5;
@@ -27,6 +29,10 @@ f4:{
   x+y};
 f5:{
   x+y};
+.f.n:{[x]
+  a:{[x]x}each a;
+  ([a:11h$()]b:10 20 30)
+ };
 f1 .(1 2 3)
 asc 1 2 3
 f1[x; y ;h ;t]

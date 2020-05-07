@@ -19,16 +19,19 @@ contexts:
     - include: string
     - include: global_def
     - include: highlights
+    - include: function_entry
 
   main:
-    - include: root_local_def
+    - include: root_global_def
 
-    - match: '{'
-      push: [function, func_params]
-      # push: function
-
-  global_def:
+  global_def: #start with dot, single :
     - match: '((?=\.){{w}}\s*)(:)'
+      captures:
+        1: variable.parameter.global.source.q
+        4: support.function.q
+
+  root_global_def: #in non-lambda context
+    - match: '((?!\.){{w}}\s*)(::?)'
       captures:
         1: variable.parameter.global.source.q
         4: support.function.q
@@ -36,13 +39,13 @@ contexts:
   global_def_fn:
     - match: '((?!\.){{w}}\s*)(::)'
       captures:
-        1: variable.parameter.fnglobal.source.q
+        1: variable.parameter.global.source.q
         4: support.function.q
 
-  root_local_def:
+  local_def_fn: #local vars in lambda context
     - match: '((?!\.){{w}}\s*)(:)'
       captures:
-        1: variable.parameter.global.source.q
+        1: entity.other.inherited-class.source.q
         4: support.function.q
 
   highlights:
@@ -85,19 +88,30 @@ contexts:
     - match: ( /|^/).*
       scope: comment.line.source.q
 
+  function_entry:
+    - match: '{'
+      push: [function, func_params]
+      # push: function
+
   function:
+    - meta_include_prototype: false # this and next lines are some trickery
+    - include: prototype
     - include: global_def_fn
+    - include: local_def_fn
+    # - meta_content_scope: debug.fn.source.q
     - match: '}'
       pop: true
 
   func_params:
     - meta_include_prototype: false
+    # - meta_content_scope: debug.fnparams.source.q
     - include: comments
     - match: '(?=[^\s\[])'
       pop: true
     - match: '\['
       push:
         - meta_include_prototype: false
+        # - meta_content_scope: debug.fnparams_int.source.q
         - match: '{{w}}'
           scope: entity.other.inherited-class.q
         - match: '\]'
