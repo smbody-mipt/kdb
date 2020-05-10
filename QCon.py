@@ -129,7 +129,7 @@ class QCon():
                 return False
             finally:
                 self.q.close()
-        else
+        else:
             self.mem = None
         return True
 
