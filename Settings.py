@@ -60,3 +60,6 @@ class Settings():
 
 	def get_creds_valid_time(self):
 		return self.get('creds_valid_time')
+
+	def get_reduce_rtt(self):
+		return self.get('reduce_rtt')

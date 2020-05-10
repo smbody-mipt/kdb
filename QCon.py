@@ -2,8 +2,12 @@ import sublime, sublime_plugin
 from .qpython import qconnection
 from . import q_creds_provider as qcp
 from socket import error as socket_error
+from . import Settings as S
 
 class QCon():
+
+    settings = S.Settings()
+
     def __init__(self, host, port, username, password, name=None):
         # self.init = False
         self.mem = 0
@@ -115,15 +119,18 @@ class QCon():
             return '{0:.0f}'.format(mem) + 'B'
 
     def ok(self):
-        try:
-            self.q.open()
-            # if not self.init:
-            #     self.initCon()
-            self.mem = self.q('@[{.Q.w[][`used]}; (); 0]')
-        except socket_error as serr:
-            return False
-        finally:
-            self.q.close()
+        if self.settings.get_reduce_rtt() < 2:
+            try:
+                self.q.open()
+                # if not self.init:
+                #     self.initCon()
+                self.mem = self.q('@[{.Q.w[][`used]}; (); 0]')
+            except socket_error as serr:
+                return False
+            finally:
+                self.q.close()
+        else
+            self.mem = None
         return True
 
     # def initCon(self):
