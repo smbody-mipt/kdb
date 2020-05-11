@@ -4,8 +4,6 @@ from . import q_send as QS
 from . import Settings as S
 
 class QEvent(sublime_plugin.EventListener):
-	settings = S.Settings()
-
 	#update connection status when view is activated
 	def on_activated_async(self, view):
 		if (view.score_selector(0, 'source.q') != 0):				#only activated for q
@@ -14,15 +12,13 @@ class QEvent(sublime_plugin.EventListener):
 				view.set_status('q', qcon.status())
 
 	def on_query_completions(self, view, prefix, locations):
-		if not view.match_selector(locations[0], "source.q") or not self.settings.get('use_completion'):
+		if not view.match_selector(locations[0], "source.q") or not S.Settings.get('use_completion'):
 			return []
 		compl = view.settings().get('q_compl')
 		#print(compl)
 		return compl or []
 
 class QUpdateCompletionsCommand(QS.QSendRawCommand):
-	settings = S.Settings()
-
 	def query(self):
 		t = '(tables `.)!cols each tables `.'
 		v = '(system "v") except system"a"'
@@ -32,7 +28,7 @@ class QUpdateCompletionsCommand(QS.QSendRawCommand):
 		return '`t`v`f`q`ns!({0}; {1}; {2}; {3}; {4})'.format(t, v, f, q, ns)
 
 	def send(self, con, s):
-		if not self.settings.get('use_completion'):
+		if not S.Settings.get('use_completion'):
 			return
 		try:
 			q = con.q
@@ -68,7 +64,8 @@ class QUpdateCompletionsCommand(QS.QSendRawCommand):
 
 			self.view.settings().set('q_compl', compl)
 		finally:
-			q.close()
+			if S.Settings.get_reduce_rtt() < 3:
+				q.close()
 
 	def makeCompletions(self, l, t):
 		out = []

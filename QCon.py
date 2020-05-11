@@ -119,23 +119,15 @@ class QCon():
             return '{0:.0f}'.format(mem) + 'B'
 
     def ok(self):
-        if self.settings.get_reduce_rtt() < 2:
-            try:
-                self.q.open()
-                # if not self.init:
-                #     self.initCon()
+        try:
+            self.q.open()
+            if S.Settings.get_reduce_rtt() < 2:
                 self.mem = self.q('@[{.Q.w[][`used]}; (); 0]')
-            except socket_error as serr:
-                return False
-            finally:
+            else:
+                self.mem = None
+        except socket_error as serr:
+            return False
+        finally:
+            if S.Settings.get_reduce_rtt() < 3:
                 self.q.close()
-        else:
-            self.mem = None
         return True
-
-    # def initCon(self):
-    #     #only call at first time
-    #     print('init ' + self.h())
-    #     #self.q('system "c 2000 2000"')  #expand output to max 2000 chars
-    #     self.init = True
-

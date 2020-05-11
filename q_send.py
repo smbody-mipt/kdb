@@ -18,8 +18,6 @@ from . import Settings as S
 #view.show_popup(d)
 class QSendRawCommand(q_chain.QChainCommand):
 
-    settings = S.Settings()
-
     def do(self, edit=None, input=None):
         con = Q.QCon.loadFromView(self.view)
         if con:
@@ -33,8 +31,8 @@ class QSendRawCommand(q_chain.QChainCommand):
         try:
             q = con.q
             q.open()
-            print(self.settings.get_reduce_rtt())
-            if self.settings.get_reduce_rtt() == 0:
+            # print(S.Settings.get_reduce_rtt())
+            if S.Settings.get_reduce_rtt() == 0:
                 #bundle all pre/post q call to save round trip time
                 pre_exec = []
                 #pre_exec.append('if[not `st in key `; .st.tmp: `]')
@@ -45,7 +43,7 @@ class QSendRawCommand(q_chain.QChainCommand):
                 q(pre_exec)
 
             res = q(s)
-            if self.settings.get_reduce_rtt() == 0:
+            if S.Settings.get_reduce_rtt() == 0:
                 post_exec = []
                 #get exec time, result dimensions
                 post_exec.append('res:`time`c`mem!((3_string `second$.st.execTime:.z.T-.st.start);(" x " sv string ($[.Q.qt .st.tmp;count cols .st.tmp;0]),count .st.tmp); ((@[{.Q.w[][`used]}; (); 0]) - .st.mem))')

@@ -3,7 +3,6 @@ from . import Settings as S
 import time
 
 class q_creds_provider():
-    settings = S.Settings()
     username = ""
     password = ""
     last_upd = None
@@ -11,9 +10,9 @@ class q_creds_provider():
     def updateCreds(cls, force=False):
         # if(cls.last_upd):
         #     print("diff="+str(time.time()-cls.last_upd))
-        if (not force and cls.last_upd and time.time() - cls.last_upd < cls.settings.get_creds_valid_time()):
+        if (not force and cls.last_upd and time.time() - cls.last_upd < S.Settings.get_creds_valid_time()):
             return
-        creds_cmd = cls.settings.get_creds_command()
+        creds_cmd = S.Settings.get_creds_command()
         if (not creds_cmd):
             cls.username = ''
             cls.password = ''
