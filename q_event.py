@@ -59,7 +59,7 @@ class QUpdateCompletionsCommand(QS.QSendRawCommand):
 				for c in x[1]:
 					c = c.decode('utf-8')
 					#print(c)
-					f = n + '.' + c
+					f = "." + n + '.' + c
 					compl.append((f + '\t' + n, f[1:]))
 
 			self.view.settings().set('q_compl', compl)
