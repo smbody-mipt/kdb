@@ -140,6 +140,7 @@ class QConnection(object):
     def close(self):
         '''Closes connection with the q service.'''
         if self._connection:
+            self._connection.shutdown(socket.SHUT_RDWR)
             self._connection.close()
             self._connection = None
 

@@ -18,6 +18,12 @@ class QEvent(sublime_plugin.ViewEventListener):
 		#print(compl)
 		return compl or []
 
+	def on_close(self):
+		conn = S.Settings.get_view_conn(self.view)
+		if conn:
+			conn.close()
+		S.Settings.clear_viewid_conn(self.view.id())
+
 class QUpdateCompletionsCommand(QS.QSendRawCommand):
 	def query(self):
 		t = '(tables `.)!cols each tables `.'
