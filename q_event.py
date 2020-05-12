@@ -3,18 +3,18 @@ from . import QCon as Q
 from . import q_send as QS
 from . import Settings as S
 
-class QEvent(sublime_plugin.EventListener):
+class QEvent(sublime_plugin.ViewEventListener):
 	#update connection status when view is activated
-	def on_activated_async(self, view):
-		if (view.score_selector(0, 'source.q') != 0):				#only activated for q
-			qcon = S.Settings.get_view_conn(view)
+	def on_activated_async(self):
+		if (self.view.score_selector(0, 'source.q') != 0):				#only activated for q
+			qcon = S.Settings.get_view_conn(self.view)
 			if qcon:
-				view.set_status('q', qcon.status())
+				self.view.set_status('q', qcon.status())
 
-	def on_query_completions(self, view, prefix, locations):
-		if not view.match_selector(locations[0], "source.q") or not S.Settings.get('use_completion'):
+	def on_query_completions(self, prefix, locations):
+		if not self.view.match_selector(locations[0], "source.q") or not S.Settings.get('use_completion'):
 			return []
-		compl = view.settings().get('q_compl')
+		compl = self.view.settings().get('q_compl')
 		#print(compl)
 		return compl or []
 
@@ -59,8 +59,8 @@ class QUpdateCompletionsCommand(QS.QSendRawCommand):
 				for c in x[1]:
 					c = c.decode('utf-8')
 					#print(c)
-					f = "." + n + '.' + c
-					compl.append((f + '\t' + n, f[1:]))
+					f = n + '.' + c
+					compl.append((f + '\t' + n, f))
 
 			self.view.settings().set('q_compl', compl)
 		finally:
