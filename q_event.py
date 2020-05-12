@@ -7,7 +7,7 @@ class QEvent(sublime_plugin.EventListener):
 	#update connection status when view is activated
 	def on_activated_async(self, view):
 		if (view.score_selector(0, 'source.q') != 0):				#only activated for q
-			qcon = Q.QCon.loadFromView(view)
+			qcon = S.Settings.get_view_conn(view)
 			if qcon:
 				view.set_status('q', qcon.status())
 

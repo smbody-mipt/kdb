@@ -19,7 +19,7 @@ from . import Settings as S
 class QSendRawCommand(q_chain.QChainCommand):
 
     def do(self, edit=None, input=None):
-        con = Q.QCon.loadFromView(self.view)
+        con = S.Settings.get_view_conn(self.view)
         if con:
             return self.send(con, input)
         else:
@@ -82,7 +82,8 @@ class QSendRawCommand(q_chain.QChainCommand):
             sublime.error_message('Cannot to connect to \n"' + con.h() + '"\n\nError message: ' + str(serr))
             raise serr
         finally:
-            q.close()
+            if S.Settings.get_reduce_rtt() < 3:
+                q.close()
 
         self.view.set_status('q', con.status())
         

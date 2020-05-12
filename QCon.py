@@ -43,11 +43,6 @@ class QCon():
         return con
 
     @classmethod
-    def loadFromView(cls, view):
-        d = view.settings().get('q_handle')
-        return QCon.fromDict(d)
-
-    @classmethod
     def fromDict(cls, d):
         if d is None: return None
         return cls(d["host"], d["port"], d["username"], d["password"], d["name"])
@@ -131,3 +126,6 @@ class QCon():
             if S.Settings.get_reduce_rtt() < 3:
                 self.q.close()
         return True
+
+    def close(self):
+        self.q.close()

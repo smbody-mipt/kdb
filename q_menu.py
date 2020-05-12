@@ -3,32 +3,18 @@ from . import QCon as Q
 from . import Settings as S
 
 class PerViewCommand(sublime_plugin.WindowCommand):
-    settings = S.Settings()
-
     def view(self):
         return self.window.active_view()
 
-    def local(self):
-        return self.view().settings()
-
-    def g(self):
-        return S.Settings
-
     def getCurrentConnection(self):
-        qcon_dict = self.local().get('q_handle')
-        if qcon_dict:
-            return Q.QCon.fromDict(qcon_dict)
-        return None
+        return S.Settings.get_view_conn(self.view())
 
     def isCurrentConnection(self, qcon):
         current = self.getCurrentConnection()
         return current and current.equals(qcon)
 
-    def deleteConnection(self):
-        return self.local().set('q_handle', None)
-
     def setConnection(self, qcon):
-        self.local().set('q_handle', qcon.toDict())
+        S.Settings.set_view_conn(self.view(), qcon)
 
     def set_status(self, tag, message, temp=False):
         self.view().set_status(tag, message)
@@ -54,10 +40,13 @@ class ShowConnectionListCommand(PerViewCommand):
         l = [['Add...', 'New Connection']]  #add new connection to first element in the list
         #array of dict to array of array format as reqruired by show_quick_panel()
         current = self.getCurrentConnection()
+        if current:
+            l.append([current.name, "[CONNECTED] " + current.h()])
         for qcon in qcons:
-            c = ' [Current]' if current and qcon.equals(current) else ''
-            item = [qcon.name + c, qcon.h()]
-            l.append(item)
+            if current and qcon.equals(current):
+                continue 
+            l.append([qcon.name, qcon.h()])
+        self.l = l
         self.window.show_quick_panel(l, self.prompt_actions, 0, 1)  #start at index 1 (so user can press up for new)
 
     def prompt_actions(self, i):
@@ -67,7 +56,8 @@ class ShowConnectionListCommand(PerViewCommand):
             self.window.run_command('new_connection')
             return
         
-        self.qcon = self.qcons[i - 1]
+        self.conn = self.l[i]
+
         self.window.show_quick_panel(ShowConnectionListCommand.ACTIONS, self.on_done)
 
     def on_done(self, i):
@@ -75,8 +65,8 @@ class ShowConnectionListCommand(PerViewCommand):
             return
         action = ShowConnectionListCommand.ACTIONS[i]
         action = action.replace(' ', '_').lower()
-        print(action + ' ' + str(self.qcon.h()))
-        self.window.run_command(action + '_connection', {'name': self.qcon.name, 'h': self.qcon.h()})
+        print(action + ' ' + str(self.conn[1]))
+        self.window.run_command(action + '_connection', {'name': self.conn[0], 'h': self.conn[1].replace("[CONNECTED] ","")})
 
 
 class NewConnectionCommand(PerViewCommand):
@@ -84,11 +74,11 @@ class NewConnectionCommand(PerViewCommand):
         self.prompt_new_connection()
 
     def prompt_new_connection(self):
-        self.window.show_input_panel('New q Connectionœ', S.Settings.default_new_connection(), self.prompt_name, None, None)
+        self.window.show_input_panel('New q Connection handle:', S.Settings.default_new_connection(), self.prompt_name, None, None)
 
     def prompt_name(self, h):
         self.h = h
-        self.window.show_input_panel('Connection Name', h, self.on_done, None, self.on_cancel)
+        self.window.show_input_panel('Connection Name:', h, self.on_done, None, self.on_cancel)
 
     def on_cancel(self):
         self.on_done('')
@@ -116,7 +106,6 @@ class CommandWithQCon(PerViewCommand):
 
 class UseConnectionCommand(CommandWithQCon):
     def do(self):
-        S.Settings.move_to_top(self.qcon) #this will put use connection on the top of connection list
         self.setConnection(self.qcon)
         self.done()
 
