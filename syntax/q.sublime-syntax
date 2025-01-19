@@ -18,6 +18,7 @@ contexts:
     - include: comments
     - include: string
     - include: global_def
+    - include: set_def
     - include: highlights
     - include: function_entry
 
@@ -29,6 +30,12 @@ contexts:
       captures:
         1: variable.parameter.global.source.q
         4: support.function.q
+
+  set_def: # `var set val
+    - match: '(`{{w}})(?=\s*set{{ncr}})'
+      captures:
+        1: variable.parameter.global.source.q
+      # scope: debug.globalset.source.q
 
   root_global_def: #in non-lambda context
     - match: '((?!\.){{w}}\s*)(::?)'
@@ -61,7 +68,7 @@ contexts:
       scope: constant.numeric.temporal.source.q
     - match: '{{ncl}}(0[Nn][ghijefpmdznuvt]?|-?0[wW][hijefpdznuvt]?){{ncr}}' #null/inf
       scope: constant.numeric.decimal.source.q
-    - match: '{{ncl}}([01]+b|0x[a-f0-9]+|-?\d{1,}([hij]|(.\d*)?[ef])?|\d{4}\.\d\dm?){{ncr}}' #b,x,i,j,e,f,m
+    - match: '{{ncl}}([01]+b|0x[a-f0-9]+|-?\d{1,}([hij]|(.\d*)?(e[+-]?\d+|[ef]))?|\d{4}\.\d\dm?){{ncr}}' #b,x,i,j,e,f,m
       scope: constant.numeric.decimal.source.q
     - match: '(?:[-+!$@\\/#?|'',\(\\)]|(?<=[^a-zA-Z])_|/:|\:|'':|:'')'
       scope: support.function.q
