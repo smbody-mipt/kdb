@@ -32,9 +32,10 @@ contexts:
         4: support.function.q
 
   set_def: # `var set val
-    - match: '(`{{w}})(?=\s*set{{ncr}})'
+    - match: '(`)({{w}})(?=\s*set{{ncr}})'
       captures:
-        1: variable.parameter.global.source.q
+        1: string.interpolated.symbol.source.q
+        2: variable.parameter.global.source.q
       # scope: debug.globalset.source.q
 
   root_global_def: #in non-lambda context
